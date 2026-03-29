@@ -1,0 +1,102 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-4">
+  <div class="col-md-5 offset-md-3">
+    <div class="card p-4 shadow-sm">
+      <!-- Booking summary -->
+      <h5 class="mb-3">Booking Summary</h5>
+      <div class="alert alert-secondary mb-4">
+        <p class="mb-1"><b><%= booking.listing.title %></b></p>
+        <p class="mb-1 text-muted">
+          <%= new Date(booking.checkIn).toDateString() %> → <%= new
+          Date(booking.checkOut).toDateString() %>
+        </p>
+        <p class="mb-1 text-muted">
+          <%= booking.nights %> night(s) · <%= booking.guests %> guest(s)
+        </p>
+        <hr />
+        <div class="d-flex justify-content-between fw-bold">
+          <span>Total</span>
+          <span>&#8377;<%= booking.totalPrice.toLocaleString("en-IN") %></span>
+        </div>
+      </div>
+
+      <!-- Fake payment form -->
+      <h5 class="mb-3">Payment Details</h5>
+      <form
+        action="/bookings/<%= booking._id %>/pay"
+        method="POST"
+        id="paymentForm"
+      >
+        <div class="mb-3">
+          <label class="form-label">Cardholder name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="John Doe"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Card number</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="4242 4242 4242 4242"
+            maxlength="19"
+            id="cardNumber"
+            required
+          />
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label class="form-label">Expiry date</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="MM/YY"
+              maxlength="5"
+              required
+            />
+          </div>
+          <div class="col-6 mb-3">
+            <label class="form-label">CVV</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="•••"
+              maxlength="3"
+              required
+            />
+          </div>
+        </div>
+
+        <button class="btn btn-success w-100 mt-2" id="payBtn">
+          Pay &#8377;<%= booking.totalPrice.toLocaleString("en-IN") %>
+        </button>
+      </form>
+
+      <p class="text-center text-muted mt-3" style="font-size: 0.8rem">
+        🔒 This is a test payment. No real money will be charged.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Format card number with spaces
+  document.getElementById("cardNumber").addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\D/g, "").substring(0, 16);
+    e.target.value = value.replace(/(.{4})/g, "$1 ").trim();
+  });
+
+  // Simulate payment processing
+  document
+    .getElementById("paymentForm")
+    .addEventListener("submit", function (e) {
+      const btn = document.getElementById("payBtn");
+      btn.disabled = true;
+      btn.innerHTML = "Processing...";
+    });
+</script>

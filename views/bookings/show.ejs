@@ -1,0 +1,38 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-4">
+  <div class="col-md-6 offset-md-3 text-center">
+    <div class="card p-4 shadow-sm">
+      <div style="font-size: 4rem">✅</div>
+      <h3 class="mt-2">Booking Confirmed!</h3>
+      <p class="text-muted">Your stay has been successfully booked.</p>
+      <hr />
+
+      <div class="text-start">
+        <p><b>Listing:</b> <%= booking.listing.title %></p>
+        <p>
+          <b>Location:</b> <%= booking.listing.location %>, <%=
+          booking.listing.country %>
+        </p>
+        <p><b>Check-in:</b> <%= new Date(booking.checkIn).toDateString() %></p>
+        <p>
+          <b>Check-out:</b> <%= new Date(booking.checkOut).toDateString() %>
+        </p>
+        <p><b>Guests:</b> <%= booking.guests %></p>
+        <p><b>Nights:</b> <%= booking.nights %></p>
+        <p>
+          <b>Total paid:</b> &#8377;<%=
+          booking.totalPrice.toLocaleString("en-IN") %>
+        </p>
+        <p>
+          <b>Status:</b>
+          <span class="badge bg-success"><%= booking.status %></span>
+        </p>
+      </div>
+
+      <div class="d-flex gap-2 mt-3 justify-content-center">
+        <a href="/bookings/my-bookings" class="btn btn-dark">My Bookings</a>
+        <a href="/listings" class="btn btn-outline-dark">Explore More</a>
+      </div>
+    </div>
+  </div>
+</div>

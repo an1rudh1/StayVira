@@ -1,0 +1,140 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-4">
+  <div class="col-md-6 offset-md-3">
+    <div class="card p-4 shadow-sm">
+      <h3 class="mb-1">Book your stay</h3>
+      <p class="text-muted mb-4">
+        <i><%= listing.title %></i> &mdash; &#8377;<%=
+        listing.price.toLocaleString("en-IN") %> / night
+      </p>
+
+      <form
+        action="/listings/<%= listing._id %>/book"
+        method="POST"
+        id="bookingForm"
+      >
+        <div class="mb-3">
+          <label class="form-label">Check-in date</label>
+          <input
+            type="date"
+            name="checkIn"
+            id="checkIn"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Check-out date</label>
+          <input
+            type="date"
+            name="checkOut"
+            id="checkOut"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Number of guests</label>
+          <input
+            type="number"
+            name="guests"
+            id="guests"
+            class="form-control"
+            min="1"
+            max="10"
+            value="1"
+            required
+          />
+        </div>
+
+        <!-- Price summary -->
+        <div id="priceSummary" class="alert alert-secondary d-none">
+          <div class="d-flex justify-content-between">
+            <span
+              >&#8377;<%= listing.price.toLocaleString("en-IN") %> x
+              <span id="nightsCount">0</span> nights</span
+            >
+            <span>&#8377;<span id="totalPrice">0</span></span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between fw-bold">
+            <span>Total</span>
+            <span>&#8377;<span id="totalPriceFinal">0</span></span>
+          </div>
+        </div>
+
+        <button class="btn btn-dark w-100 mt-2">Proceed to Payment</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const pricePerNight = <%= listing.price %>;
+  const checkInInput = document.getElementById("checkIn");
+  const checkOutInput = document.getElementById("checkOut");
+  const priceSummary = document.getElementById("priceSummary");
+
+  // Booked date ranges from server
+  const bookedRanges = <%- JSON.stringify(bookedDates) %>.map(b => ({
+    checkIn: new Date(b.checkIn),
+    checkOut: new Date(b.checkOut),
+  }));
+
+  // Set min date to today
+  const today = new Date().toISOString().split("T")[0];
+  checkInInput.min = today;
+  checkOutInput.min = today;
+
+  function isDateInBookedRange(date) {
+    return bookedRanges.some(range => date >= range.checkIn && date < range.checkOut);
+  }
+
+  function hasOverlap(checkIn, checkOut) {
+    return bookedRanges.some(range =>
+      checkIn < range.checkOut && checkOut > range.checkIn
+    );
+  }
+
+  function calculatePrice() {
+    const checkIn = new Date(checkInInput.value);
+    const checkOut = new Date(checkOutInput.value);
+
+    if (checkInInput.value && checkOutInput.value && checkOut > checkIn) {
+      // Check overlap with booked dates
+      if (hasOverlap(checkIn, checkOut)) {
+        priceSummary.classList.remove("d-none");
+        priceSummary.classList.remove("alert-secondary");
+        priceSummary.classList.add("alert-danger");
+        priceSummary.innerHTML = "⚠️ These dates overlap with an existing booking. Please choose different dates.";
+        return;
+      }
+
+      const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+      const total = nights * pricePerNight;
+
+      priceSummary.classList.remove("d-none", "alert-danger");
+      priceSummary.classList.add("alert-secondary");
+      priceSummary.innerHTML = `
+        <div class="d-flex justify-content-between">
+          <span>&#8377;${pricePerNight.toLocaleString("en-IN")} x ${nights} nights</span>
+          <span>&#8377;${total.toLocaleString("en-IN")}</span>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between fw-bold">
+          <span>Total</span>
+          <span>&#8377;${total.toLocaleString("en-IN")}</span>
+        </div>`;
+    } else {
+      priceSummary.classList.add("d-none");
+    }
+  }
+
+  checkInInput.addEventListener("change", () => {
+    checkOutInput.min = checkInInput.value;
+    calculatePrice();
+  });
+  checkOutInput.addEventListener("change", calculatePrice);
+</script>

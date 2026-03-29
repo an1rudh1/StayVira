@@ -1,0 +1,72 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-4">
+  <div class="col-md-10 offset-md-1">
+    <h3 class="mb-1">Owner Dashboard</h3>
+    <p class="text-muted mb-4">Manage bookings across your listings</p>
+
+    <% if(bookings.length === 0) { %>
+      <div class="alert alert-secondary">
+        No bookings yet on your listings.
+        <a href="/listings">View your listings</a>
+      </div>
+    <% } else { %>
+      <% for(let booking of bookings) { %>
+        <div class="card mb-3 shadow-sm">
+          <div class="row g-0">
+            <% if(booking.listing && booking.listing.image && booking.listing.image[0]) { %>
+              <div class="col-md-2">
+                <img
+                  src="<%= booking.listing.image[0].url %>"
+                  class="img-fluid rounded-start"
+                  style="height: 100%; object-fit: cover;"
+                  alt="listing"
+                />
+              </div>
+            <% } %>
+            <div class="col-md-10">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 class="mb-1"><%= booking.listing ? booking.listing.title : "Listing unavailable" %></h5>
+                    <p class="text-muted mb-1">
+                      Booked by <b><%= booking.user ? booking.user.username : "Unknown" %></b>
+                      (<%= booking.user ? booking.user.email : "" %>)
+                    </p>
+                    <p class="text-muted mb-1">
+                      <%= new Date(booking.checkIn).toDateString() %> →
+                      <%= new Date(booking.checkOut).toDateString() %>
+                      &nbsp;·&nbsp; <%= booking.nights %> night(s)
+                      &nbsp;·&nbsp; <%= booking.guests %> guest(s)
+                    </p>
+                    <p class="mb-2">
+                      <b>&#8377;<%= booking.totalPrice.toLocaleString("en-IN") %></b>
+                    </p>
+                  </div>
+                  <span class="badge
+                    <%= booking.status === 'confirmed' ? 'bg-success' :
+                        booking.status === 'cancelled' ? 'bg-danger' : 'bg-warning text-dark' %>">
+                    <%= booking.status %>
+                  </span>
+                </div>
+
+                <% if(booking.status === "pending") { %>
+                  <div class="d-flex gap-2 mt-2">
+                    <form method="POST" action="/bookings/<%= booking._id %>/status">
+                      <input type="hidden" name="status" value="confirmed" />
+                      <button class="btn btn-sm btn-success">Accept</button>
+                    </form>
+                    <form method="POST" action="/bookings/<%= booking._id %>/status">
+                      <input type="hidden" name="status" value="cancelled" />
+                      <button class="btn btn-sm btn-danger">Reject</button>
+                    </form>
+                  </div>
+                <% } %>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
+  </div>
+</div>
