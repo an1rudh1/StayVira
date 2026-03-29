@@ -121,3 +121,72 @@ body {
   height: 400px;
   width: 80vh;
 }
+
+/* ─── NAVBAR MOBILE FIX ─── */
+@media (max-width: 768px) {
+  .navbar-collapse {
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+    z-index: 9999;
+    position: relative;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 8px 4px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+  }
+
+  .navbar-nav .nav-link:last-child {
+    border-bottom: none;
+  }
+}
+
+/* ─── STAR RATING FIX ─── */
+.starability-result {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 14px;
+}
+
+.starability-slot {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* Review card fix */
+.card.col-5 {
+  min-width: 260px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .card.col-5 {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Reviews row fix on mobile */
+  .row .card.col-5 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* ─── MAP FIX ─── */
+#map {
+  height: 400px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  #map {
+    height: 250px;
+  }
+}
