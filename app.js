@@ -100,6 +100,10 @@ app.use("/", userRouter);
 app.use("/bookings", bookingRouter);
 app.use("/", staticRoutes);
 
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
+
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
