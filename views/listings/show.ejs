@@ -14,7 +14,7 @@
             <% listing.image.forEach((img, index) => { %>
               <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
                 <img
-                  src="<%= img.url.replace('/upload','/upload/w_600,h_350,c_fill,q_auto,f_auto') %>"
+                  src="<%= img.url.replace('/upload','/upload/w_600,q_auto,f_auto') %>"
                   class="card-img-top show-img"
                   alt="listing-image"
                 />
