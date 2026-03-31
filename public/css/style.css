@@ -102,8 +102,8 @@ body {
 /* Show Page */
 
 .show-img {
-  height: 30vh;
-  width: 20vh;
+  height: 350px;
+  object-fit: cover;
 }
 
 .btns {
