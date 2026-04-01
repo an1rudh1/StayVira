@@ -99,7 +99,7 @@ body {
   border: none !important;
 }
 
-/* Show Page */
+/* Show Page
 
 .show-img {
   max-height: 400px;
@@ -114,13 +114,72 @@ body {
 .show-card {
   padding-left: 0;
   padding-right: 0;
-}
+} */
 
-/* MAP */
+/* MAP
 
 #map {
   height: 400px;
   width: 80vh;
+} */
+
+/* ─── SHOW PAGE ─── */
+.show-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.show-img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Carousel controls — make them visible */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+.carousel-control-prev {
+  left: 10px;
+}
+
+.carousel-control-next {
+  right: 10px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+  width: 14px;
+  height: 14px;
+}
+
+/* Map */
+#map {
+  height: 400px;
+  width: 100%;
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .show-img {
+    height: 260px;
+  }
+  #map {
+    height: 250px;
+  }
 }
 
 /* ─── NAVBAR MOBILE FIX ─── */
