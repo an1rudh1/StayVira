@@ -106,6 +106,16 @@ module.exports.updateListing = async (req, res) => {
   let { id } = req.params;
   let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
+  // Re-geocode if location was updated
+  let response = await geocodingClient
+    .forwardGeocode({
+      query: req.body.listing.location,
+      limit: 1,
+    })
+    .send();
+
+  listing.geometry = response.body.features[0].geometry;
+
   if (req.files && req.files.length > 0) {
     listing.image = req.files.map((f) => ({
       url: f.path,
