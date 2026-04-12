@@ -102,11 +102,21 @@ module.exports.renderEditListing = async (req, res) => {
   res.render("listings/edit.ejs", { listing, originalImageUrl });
 };
 
+// re-written
 module.exports.updateListing = async (req, res) => {
   let { id } = req.params;
-  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
-  // Re-geocode if location was updated
+  // Find first, don't update yet
+  let listing = await Listing.findById(id);
+
+  // Update fields manually
+  listing.title = req.body.listing.title;
+  listing.description = req.body.listing.description;
+  listing.price = req.body.listing.price;
+  listing.location = req.body.listing.location;
+  listing.country = req.body.listing.country;
+
+  // Re-geocode new location
   let response = await geocodingClient
     .forwardGeocode({
       query: req.body.listing.location,
@@ -116,13 +126,16 @@ module.exports.updateListing = async (req, res) => {
 
   listing.geometry = response.body.features[0].geometry;
 
+  // Update images if new ones uploaded
   if (req.files && req.files.length > 0) {
     listing.image = req.files.map((f) => ({
       url: f.path,
       filename: f.filename,
     }));
-    await listing.save();
   }
+
+  await listing.save();
+
   req.flash("success", "Listing got Updated");
   res.redirect(`/listings/${id}`);
 };

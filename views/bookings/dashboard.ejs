@@ -38,6 +38,11 @@
                       &nbsp;·&nbsp; <%= booking.nights %> night(s)
                       &nbsp;·&nbsp; <%= booking.guests %> guest(s)
                     </p>
+
+                    <!-- Booking date on which date the user has booked date for -->
+                    <p class="text-muted mb-2" style="font-size: 0.85rem;">
+                        <i class="fa-solid fa-clock me-1"></i>Booked on <%= new Date(booking.createdAt).toDateString() %>
+                    </p>
                     <p class="mb-2">
                       <b>&#8377;<%= booking.totalPrice.toLocaleString("en-IN") %></b>
                     </p>

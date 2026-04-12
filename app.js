@@ -28,7 +28,10 @@ const bookingRouter = require("./routes/booking.js");
 const staticRoutes = require("./routes/static");
 
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-const dbUrl = process.env.ATLASDB_URL;
+// const dbUrl = process.env.ATLASDB_URL;
+
+// Changed database name from Wanderlust to StayVira
+const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/stayvira";
 
 main()
   .then(() => {
