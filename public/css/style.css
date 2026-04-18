@@ -71,26 +71,34 @@ body {
 .listing-card {
   border: none !important;
   margin-bottom: 2rem;
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.card.img-top {
-  border-radius: 1rem;
-  width: 100% !important;
+.listing-card .card.img-top {
+  border-radius: 16px 16px 0 0 !important;
+  height: 20rem;
   object-fit: cover !important;
+  width: 100% !important;
 }
 
 .card-body {
-  padding: 0 !important;
+  padding: 1rem !important;
 }
 
-.card-text p {
-  font-weight: 400 !important;
+.card-text {
+  font-weight: 500 !important;
 }
-
+.card-text-owner {
+  font-weight: bold !important;
+}
 .listing-link {
   text-decoration: none;
 }
-
+.fa-solid {
+  color: #cc3d46;
+}
 /* CARD Effect */
 .card-img-overlay {
   opacity: 0;
@@ -146,6 +154,10 @@ body {
   object-fit: cover;
   object-position: center;
   border-radius: 12px 12px 0 0;
+}
+
+.bookButton {
+  background-color: #a1151e !important;
 }
 
 /* Carousel controls — make them visible */
@@ -221,7 +233,7 @@ body {
   }
 }
 
-/* ─── STAR RATING FIX ─── */
+/* ─── STAR RATING ─── */
 .starability-result {
   overflow: hidden;
   max-width: 100%;
@@ -254,7 +266,7 @@ body {
   }
 }
 
-/* ─── MAP FIX ─── */
+/* ─── MAP ─── */
 #map {
   height: 400px;
   width: 100%;
